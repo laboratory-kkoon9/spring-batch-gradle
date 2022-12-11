@@ -1,6 +1,7 @@
 package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
 import com.fasterxml.jackson.databind.*;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.*;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.*;
 import okhttp3.mockwebserver.*;
 import org.junit.jupiter.api.*;
@@ -70,8 +71,8 @@ class BoxOfficeClientTest {
 
         // then
         assertAll(
-                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo("유효하지않은 키값입니다."),
-                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo("320010")
+                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo(ErrorCode.INVALID_KEY.getMessage()),
+                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo(ErrorCode.INVALID_KEY.getCode())
         );
     }
 
@@ -94,8 +95,8 @@ class BoxOfficeClientTest {
 
         // then
         assertAll(
-                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo("날짜는 필수항목입니다.[parameterName=targetDt,parameterValue=null]"),
-                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo("320102")
+                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo(ErrorCode.DATE_NOT_EMPTY_BY_SEARCH_API.getMessage()),
+                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo(ErrorCode.DATE_NOT_EMPTY_BY_SEARCH_API.getCode())
         );
     }
 }
