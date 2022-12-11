@@ -1,6 +1,7 @@
 package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
 import com.fasterxml.jackson.databind.*;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.*;
 import okhttp3.mockwebserver.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
@@ -60,12 +61,12 @@ class BoxOfficeClientTest {
                                 .build()
                 )
                 .retrieve();
-        BoxOfficeFailureDto failureDto = result.bodyToMono(BoxOfficeFailureDto.class);
+        BoxOfficeFailureDto failureDto = result.bodyToMono(BoxOfficeFailureDto.class).block();
 
         // then
         assertAll(
-                () -> assertThat(failureDto.getMessage()).isEqualTo("유효하지않은 키값입니다."),
-                () -> assertThat(failureDto.getErrorCode).isEqualTo("320010")
+                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo("유효하지않은 키값입니다."),
+                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo("320010")
         );
     }
 }
