@@ -74,4 +74,28 @@ class BoxOfficeClientTest {
                 () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo("320010")
         );
     }
+
+    @Test
+    @DisplayName("필수 파라미터가 없으면 ErrorCode [320102]를 리턴한다.")
+    void invalid_key_return_error2() {
+        // when
+        WebClient.ResponseSpec result = webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .pathSegment(DAILY_SEARCH_REST_URL)
+                                .queryParam(KEY_VALUE, boxOfficeAccessKey)
+                                .build()
+                )
+                .retrieve();
+
+        BoxOfficeFailureDto failureDto = result
+                .bodyToMono(BoxOfficeFailureDto.class)
+                .block();
+
+        // then
+        assertAll(
+                () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo("날짜는 필수항목입니다.[parameterName=targetDt,parameterValue=null]"),
+                () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo("320102")
+        );
+    }
 }
