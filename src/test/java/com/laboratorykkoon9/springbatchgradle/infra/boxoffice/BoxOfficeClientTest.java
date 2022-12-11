@@ -49,7 +49,7 @@ class BoxOfficeClientTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 key로 요청을 하면 faultInfo를 리턴한다.")
+    @DisplayName("유효하지 않은 key로 요청을 하면 ErrorCode [320010]를 리턴한다.")
     void invalid_key_return_error() {
         // given
         String invalidAccessKey = "invalidAccessKey";
