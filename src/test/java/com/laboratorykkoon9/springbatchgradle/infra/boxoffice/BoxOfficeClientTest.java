@@ -14,6 +14,8 @@ import org.springframework.web.reactive.function.client.*;
 import java.io.*;
 import java.util.*;
 
+import static com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.BoxOfficeConstants.DAILY_SEARCH_REST_URL;
+import static com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.BoxOfficeConstants.KEY_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -56,12 +58,15 @@ class BoxOfficeClientTest {
         WebClient.ResponseSpec result = webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .pathSegment("searchDailyBoxOfficeList.json")
-                                .queryParam("key", invalidAccessKey)
+                                .pathSegment(DAILY_SEARCH_REST_URL)
+                                .queryParam(KEY_VALUE, invalidAccessKey)
                                 .build()
                 )
                 .retrieve();
-        BoxOfficeFailureDto failureDto = result.bodyToMono(BoxOfficeFailureDto.class).block();
+
+        BoxOfficeFailureDto failureDto = result
+                .bodyToMono(BoxOfficeFailureDto.class)
+                .block();
 
         // then
         assertAll(
