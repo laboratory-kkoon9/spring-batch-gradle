@@ -42,4 +42,4 @@ out/
 generated
 
 ## application.properties
-application-local.properties
+application.yml
