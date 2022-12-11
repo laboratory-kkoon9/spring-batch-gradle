@@ -40,3 +40,6 @@ out/
 
 ### querydsl ###
 generated
+
+## application.properties
+application-local.properties
