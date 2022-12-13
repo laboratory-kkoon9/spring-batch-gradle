@@ -1,5 +1,6 @@
 package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
+import antlr.collections.*;
 import com.fasterxml.jackson.databind.*;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.*;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.*;
@@ -13,10 +14,10 @@ import org.springframework.test.context.junit.jupiter.*;
 import org.springframework.web.reactive.function.client.*;
 
 import java.io.*;
-import java.util.*;
 
 import static com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.BoxOfficeConstants.DAILY_SEARCH_REST_URL;
 import static com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.BoxOfficeConstants.KEY_VALUE;
+import static com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.BoxOfficeConstants.TARGET_DATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -97,6 +98,34 @@ class BoxOfficeClientTest {
         assertAll(
                 () -> assertThat(failureDto.getFaultInfo().getMessage()).isEqualTo(ErrorCode.DATE_NOT_EMPTY_BY_SEARCH_API.getMessage()),
                 () -> assertThat(failureDto.getFaultInfo().getErrorCode()).isEqualTo(ErrorCode.DATE_NOT_EMPTY_BY_SEARCH_API.getCode())
+        );
+    }
+
+    @Test
+    @DisplayName("일별 박스오피스 API를 호출하면 '일별 박스오피스' 값을 가지는 type을 리턴한다.")
+    void get_daily_search() {
+        // given
+        String targetDate = "20221213";
+
+        // when
+        WebClient.ResponseSpec result = webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .pathSegment(DAILY_SEARCH_REST_URL)
+                                .queryParam(KEY_VALUE, boxOfficeAccessKey)
+                                .queryParam(TARGET_DATE, targetDate)
+                                .build()
+                )
+                .retrieve();
+
+        BoxOfficeDailyResponseDto responseDto = result
+                .bodyToMono(BoxOfficeDailyResponseDto.class)
+                .block();
+
+        // then
+        assertAll(
+                () -> assertThat(responseDto.getBoxOfficeDailyDto().getType()).isEqualTo("일별 박스오피스"),
+                () -> assertThat(responseDto.getBoxOfficeDailyDto().getRange()).isEqualTo(targetDate + "~" + targetDate)
         );
     }
 }
