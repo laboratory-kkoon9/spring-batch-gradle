@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.NULL_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class QueryStringConverterTest {
     @DisplayName("파라미터명과 값을 받아서 쿼리스트링 문자열로 컨버팅해준다.")
@@ -23,6 +25,17 @@ class QueryStringConverterTest {
 
         // then
         assertThat(result).isEqualTo(expected);
+    }
 
+    @DisplayName("null인 Map이 파라미터로 오면 NPE를 던진다.")
+    @Test
+    void test_2() {
+        // given
+        Map<String, Object> messages = null;
+
+        // then
+        assertThatThrownBy(() -> QueryStringConverter.convert(messages))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(NULL_MESSAGE);
     }
 }
