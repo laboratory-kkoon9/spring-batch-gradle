@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.NULL_MESSAGE;
+import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.EMPTY_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,7 +37,7 @@ class QueryStringConverterTest {
         // then
         assertThatThrownBy(() -> QueryStringConverter.convert(messages))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessageContaining(NULL_MESSAGE);
+                .hasMessageContaining(EMPTY_ERROR_MESSAGE);
     }
 
     @DisplayName("빈 Map이 파라미터로 오면 빈 스트링을 던진다.")

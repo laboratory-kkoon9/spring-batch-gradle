@@ -4,7 +4,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
 
-import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.NULL_MESSAGE;
+import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.EMPTY_ERROR_MESSAGE;
 
 public class QueryStringConverter {
     private QueryStringConverter(){
@@ -13,7 +13,7 @@ public class QueryStringConverter {
 
     public static String convert(Map<String, Object> messages) {
         if (messages == null) {
-            throw new NullPointerException(NULL_MESSAGE);
+            throw new NullPointerException(EMPTY_ERROR_MESSAGE);
         }
         UriComponentsBuilder queryString = UriComponentsBuilder.newInstance();
         for (String key : messages.keySet()) {
