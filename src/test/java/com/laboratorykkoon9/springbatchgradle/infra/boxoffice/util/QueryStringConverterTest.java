@@ -3,6 +3,7 @@ package com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,4 +39,19 @@ class QueryStringConverterTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessageContaining(NULL_MESSAGE);
     }
+
+    @DisplayName("빈 Map이 파라미터로 오면 빈 스트링을 던진다.")
+    @Test
+    void test_3() {
+        // given
+        Map<String, Object> messages = new HashMap<>();
+
+        // when
+        String result = QueryStringConverter.convert(messages);
+        String expected = "";
+
+        // then
+        assertThat(result).isEqualTo(expected);
+    }
+
 }
