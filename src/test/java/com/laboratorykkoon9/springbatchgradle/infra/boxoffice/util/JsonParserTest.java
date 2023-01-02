@@ -36,6 +36,5 @@ public class JsonParserTest {
                 () -> assertThat(result.contains("repNationCd")).isTrue(),
                 () -> assertThat(result.contains("wideAreaCd")).isTrue()
         );
-
     }
 }

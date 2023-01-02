@@ -1,6 +1,7 @@
 package com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -18,6 +19,7 @@ public class BoxOfficeRequestDto {
     @JsonProperty("wideAreaCd")
     private String area;
 
+    @Builder
     public BoxOfficeRequestDto(String key, String date, String row, String isMulti, String nation, String area) {
         this.key = key;
         this.date = date;

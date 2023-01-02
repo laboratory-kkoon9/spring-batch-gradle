@@ -7,8 +7,7 @@ import java.util.Map;
 import static com.laboratorykkoon9.springbatchgradle.global.constant.CommonConstants.EMPTY_ERROR_MESSAGE;
 
 public class QueryStringConverter {
-    private QueryStringConverter(){
-
+    private QueryStringConverter() {
     }
 
     public static String convert(Map<String, Object> messages) {

@@ -30,7 +30,7 @@ public class JsonToMapConverterTest {
         );
     }
 
-    @DisplayName("json 형태의 string을 Map으로 변환한다.")
+    @DisplayName("널이나 빈값의 json값은 IllegalArgumentException을 던진다.")
     @ParameterizedTest
     @NullAndEmptySource
     void test_2(String json) {
