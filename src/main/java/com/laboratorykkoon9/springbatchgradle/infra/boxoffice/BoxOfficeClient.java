@@ -2,6 +2,8 @@ package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyDto;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyResponseDto;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +26,22 @@ public class BoxOfficeClient {
     @Value("${boxoffice.key}")
     private String API_KEY;
 
-    public WebClient.ResponseSpec requestGet(String path, String param) {
+    private WebClient.ResponseSpec requestGet(String path, String param) {
         return webClient.get()
                 .uri(BASE_URL + path + param)
                 .retrieve();
+    }
+
+    public BoxOfficeDailyResponseDto dailyBoxOffices(BoxOfficeDailyDto dto) {
+        BoxOfficeDailyResponseDto result = null;
+        try {
+            result = requestGet(BASE_URL, "param.getQueryString()")
+                    .bodyToMono(BoxOfficeDailyResponseDto.class)
+                    .block();
+        } catch (Exception e) {
+            log.info("get outbound result error = {}", e.getLocalizedMessage());
+            new IllegalArgumentException(e.getLocalizedMessage());
+        }
+        return null;
     }
 }
