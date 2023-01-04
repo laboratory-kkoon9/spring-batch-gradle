@@ -16,6 +16,9 @@ public class QueryStringConverter {
         }
         UriComponentsBuilder queryString = UriComponentsBuilder.newInstance();
         for (String key : messages.keySet()) {
+            if(messages.get(key) == null) {
+                continue;
+            }
             queryString.queryParam(key, messages.get(key).toString());
         }
 

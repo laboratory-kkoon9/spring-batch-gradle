@@ -54,4 +54,22 @@ class QueryStringConverterTest {
         assertThat(result).isEqualTo(expected);
     }
 
+    @DisplayName("Map 내의 value가 null이면 제외한 쿼리스트링 결과를 리턴한다.")
+    @Test
+    void test_4() {
+        // given
+        Map<String, Object> messages = new LinkedHashMap<>(); // Test를 위해 LinkedHashMap으로 선언하였습니다.
+        messages.put("key", "1234");
+        messages.put("targetDt", "20221230");
+        messages.put("itemPerPage", "100");
+        messages.put("multiMovieYn", "N");
+        messages.put("repNationCd", "K");
+        messages.put("wideAreaCd", null);
+
+        // when
+        String result = QueryStringConverter.convert(messages);
+
+        // then
+        assertThat(result).doesNotContain("wideAreaCd");
+    }
 }
