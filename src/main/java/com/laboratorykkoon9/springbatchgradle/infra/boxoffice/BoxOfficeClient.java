@@ -2,15 +2,15 @@ package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
-import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyDto;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyResponseDto;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeRequestDto;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.JsonParser;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.JsonToMapConverter;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.QueryStringConverter;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.stereotype.*;
-import org.springframework.util.*;
-import org.springframework.web.reactive.function.*;
 import org.springframework.web.reactive.function.client.*;
 
 @Slf4j
@@ -20,9 +20,7 @@ public class BoxOfficeClient {
     private final WebClient webClient = WebClient.builder().build();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     @Value("${boxoffice.base-url}")
-
     private String BASE_URL;
-
     @Value("${boxoffice.key}")
     private String API_KEY;
 
@@ -32,16 +30,18 @@ public class BoxOfficeClient {
                 .retrieve();
     }
 
-    public BoxOfficeDailyResponseDto dailyBoxOffices(BoxOfficeDailyDto dto) {
+    public BoxOfficeDailyResponseDto dailyBoxOffices(BoxOfficeRequestDto dto) {
         BoxOfficeDailyResponseDto result = null;
+        JsonParser<BoxOfficeRequestDto> jsonParser = new JsonParser<>();
         try {
-            result = requestGet(BASE_URL, "param.getQueryString()")
+            String queryString = QueryStringConverter.convert(JsonToMapConverter.convert(jsonParser.parse(dto)));
+            result = requestGet("searchDailyBoxOfficeList.json", queryString)
                     .bodyToMono(BoxOfficeDailyResponseDto.class)
                     .block();
         } catch (Exception e) {
-            log.info("get outbound result error = {}", e.getLocalizedMessage());
+            log.info("dailyBoxOffices error = {}", e.getLocalizedMessage());
             new IllegalArgumentException(e.getLocalizedMessage());
         }
-        return null;
+        return result;
     }
 }

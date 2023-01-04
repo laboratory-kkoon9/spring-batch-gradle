@@ -128,4 +128,26 @@ class BoxOfficeClientTest {
                 () -> assertThat(responseDto.getBoxOfficeDailyDto().getRange()).isEqualTo(targetDate + "~" + targetDate)
         );
     }
+
+    @Test
+    @DisplayName("일별 박스오피스 API를 호출하면 '일별 박스오피스' 값을 가지는 type을 리턴한다.")
+    void dailyBoxOffices_test1() {
+        // given
+        BoxOfficeRequestDto dto = BoxOfficeRequestDto.builder()
+                .date("20230101")
+                .row("3")
+                .isMulti("N")
+                .nation("K")
+                .key(boxOfficeAccessKey)
+                .build();
+
+        // when
+        BoxOfficeDailyResponseDto responseDto = boxOfficeClient.dailyBoxOffices(dto);
+        // then
+        assertAll(
+                () -> assertThat(responseDto.getBoxOfficeDailyDto().getType()).isEqualTo("일별 박스오피스"),
+                () -> assertThat(responseDto.getBoxOfficeDailyDto().getRange()).isEqualTo(20230101 + "~" + 20230101),
+                () -> assertThat(responseDto.getBoxOfficeDailyDto().getBoxOfficeDailyItems().size()).isEqualTo(3)
+        );
+    }
 }
