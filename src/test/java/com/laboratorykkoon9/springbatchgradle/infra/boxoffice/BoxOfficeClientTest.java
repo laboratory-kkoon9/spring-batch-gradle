@@ -1,17 +1,20 @@
 package com.laboratorykkoon9.springbatchgradle.infra.boxoffice;
 
-import antlr.collections.*;
-import com.fasterxml.jackson.databind.*;
-import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.*;
-import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.*;
-import okhttp3.mockwebserver.*;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit.jupiter.*;
-import org.springframework.web.reactive.function.client.*;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.constants.ErrorCode;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyResponseDto;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeFailureDto;
+import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeRequestDto;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.*;
 
@@ -30,7 +33,6 @@ class BoxOfficeClientTest {
     @Autowired
     private BoxOfficeClient boxOfficeClient;
     private static MockWebServer mockWebServer;
-    private ObjectMapper objectMapper;
     private WebClient webClient;
 
     @Value("${boxoffice.key}")
@@ -41,7 +43,6 @@ class BoxOfficeClientTest {
 
     @BeforeEach
     void init() throws IOException {
-        objectMapper = new ObjectMapper();
         mockWebServer = new MockWebServer();
         mockWebServer.start();
         webClient = WebClient
