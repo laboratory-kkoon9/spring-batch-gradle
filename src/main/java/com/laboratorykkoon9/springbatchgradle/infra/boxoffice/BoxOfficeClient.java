@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeDailyResponseDto;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.dto.BoxOfficeRequestDto;
-import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.JsonParser;
-import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.JsonToMapConverter;
 import com.laboratorykkoon9.springbatchgradle.infra.boxoffice.util.QueryStringConverter;
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -32,9 +30,9 @@ public class BoxOfficeClient {
 
     public BoxOfficeDailyResponseDto dailyBoxOffices(BoxOfficeRequestDto dto) {
         BoxOfficeDailyResponseDto result = null;
-        JsonParser<BoxOfficeRequestDto> jsonParser = new JsonParser<>();
+        QueryStringConverter<BoxOfficeRequestDto> queryStringConverter = new QueryStringConverter<>();
         try {
-            String queryString = QueryStringConverter.convert(JsonToMapConverter.convert(jsonParser.parse(dto)));
+            String queryString = queryStringConverter.convert(dto);
             result = requestGet("searchDailyBoxOfficeList.json", queryString)
                     .bodyToMono(BoxOfficeDailyResponseDto.class)
                     .block();
